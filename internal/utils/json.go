@@ -12,7 +12,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/speakeasy-sdks/bar-go/types"
+	"github.com/speakeasy-sdks/bar/types"
 
 	"github.com/ericlagergren/decimal"
 )

@@ -18,7 +18,7 @@ It has been generated successfully based on your OpenAPI spec. However, it is no
 ## SDK Installation
 
 ```bash
-go get github.com/speakeasy-sdks/bar-go
+go get github.com/speakeasy-sdks/bar
 ```
 <!-- End SDK Installation -->
 
@@ -35,22 +35,21 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New()
+	s := bar.New()
 
-	operationSecurity := operations.LoginSecurity{
+	operationSecurity := bar.LoginSecurity{
 		Username: "<USERNAME>",
 		Password: "<PASSWORD>",
 	}
 
 	ctx := context.Background()
-	res, err := s.Authentication.Login(ctx, operations.LoginRequestBody{
-		Type: operations.TypeAPIKey,
+	res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
+		Type: bar.TypeAPIKey,
 	}, operationSecurity)
 	if err != nil {
 		log.Fatal(err)
@@ -73,19 +72,18 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
-	var drinkType *components.DrinkType = components.DrinkTypeSpirit
+	var drinkType *DrinkType = bar.DrinkTypeSpirit
 
 	ctx := context.Background()
 	res, err := s.Drinks.ListDrinks(ctx, drinkType)
@@ -110,21 +108,20 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
-	requestBody := []components.OrderInput{
-		components.OrderInput{
-			Type:        components.OrderTypeIngredient,
+	requestBody := []bar.OrderInput{
+		bar.OrderInput{
+			Type:        bar.OrderTypeIngredient,
 			ProductCode: "AC-A2DF3",
 			Quantity:    138554,
 		},
@@ -183,23 +180,21 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 	"net/http"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
 	ctx := context.Background()
-	res, err := s.Config.SubscribeToWebhooks(ctx, []operations.RequestBody{
-		operations.RequestBody{},
+	res, err := s.Config.SubscribeToWebhooks(ctx, []bar.RequestBody{
+		bar.RequestBody{},
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -218,17 +213,15 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/internal/utils"
-	"github.com/speakeasy-sdks/bar-go/models/components"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
+	"github.com/speakeasy-sdks/bar"
+	"github.com/speakeasy-sdks/bar/internal/utils"
 	"log"
 	"net/http"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithRetryConfig(
+	s := bar.New(
+		bar.WithRetryConfig(
 			utils.RetryConfig{
 				Strategy: "backoff",
 				Backoff: &utils.BackoffStrategy{
@@ -239,14 +232,14 @@ func main() {
 				},
 				RetryConnectionErrors: false,
 			}),
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
 	ctx := context.Background()
-	res, err := s.Config.SubscribeToWebhooks(ctx, []operations.RequestBody{
-		operations.RequestBody{},
+	res, err := s.Config.SubscribeToWebhooks(ctx, []bar.RequestBody{
+		bar.RequestBody{},
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -258,8 +251,6 @@ func main() {
 }
 
 ```
-
-
 <!-- End Retries -->
 
 <!-- Start Error Handling -->
@@ -267,10 +258,10 @@ func main() {
 
 Handling errors in this SDK should largely match your expectations.  All operations return a response object or an error, they will never return both.  When specified by the OpenAPI spec document, the SDK will return the appropriate subclass.
 
-| Error Object       | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| sdkerrors.APIError | 5XX                | application/json   |
-| sdkerrors.SDKError | 400-600            | */*                |
+| Error Object     | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| bar.APIError     | 5XX              | application/json |
+| bar.SDKError     | 400-600          | */*              |
 
 ### Example
 
@@ -280,33 +271,30 @@ package main
 import (
 	"context"
 	"errors"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
-	"github.com/speakeasy-sdks/bar-go/models/sdkerrors"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
 	ctx := context.Background()
-	res, err := s.Config.SubscribeToWebhooks(ctx, []operations.RequestBody{
-		operations.RequestBody{},
+	res, err := s.Config.SubscribeToWebhooks(ctx, []bar.RequestBody{
+		bar.RequestBody{},
 	})
 	if err != nil {
 
-		var e *sdkerrors.APIError
+		var e *APIError
 		if errors.As(err, &e) {
 			// handle error
 			log.Fatal(e.Error())
 		}
 
-		var e *sdkerrors.SDKError
+		var e *bar.SDKError
 		if errors.As(err, &e) {
 			// handle error
 			log.Fatal(e.Error())
@@ -315,7 +303,6 @@ func main() {
 }
 
 ```
-
 <!-- End Error Handling -->
 
 <!-- Start Server Selection -->
@@ -337,24 +324,23 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithServer("customer"),
+	s := bar.New(
+		bar.WithServer("customer"),
 	)
 
-	operationSecurity := operations.LoginSecurity{
+	operationSecurity := bar.LoginSecurity{
 		Username: "<USERNAME>",
 		Password: "<PASSWORD>",
 	}
 
 	ctx := context.Background()
-	res, err := s.Authentication.Login(ctx, operations.LoginRequestBody{
-		Type: operations.TypeAPIKey,
+	res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
+		Type: bar.TypeAPIKey,
 	}, operationSecurity)
 	if err != nil {
 		log.Fatal(err)
@@ -371,7 +357,7 @@ func main() {
 
 Some of the server options above contain variables. If you want to set the values of those variables, the following options are provided for doing so:
  * `WithOrganization string`
- * `WithEnvironment bargo.ServerEnvironment`
+ * `WithEnvironment bar.ServerEnvironment`
 
 ### Override Server URL Per-Client
 
@@ -381,24 +367,23 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithServerURL("https://speakeasy.bar"),
+	s := bar.New(
+		bar.WithServerURL("https://speakeasy.bar"),
 	)
 
-	operationSecurity := operations.LoginSecurity{
+	operationSecurity := bar.LoginSecurity{
 		Username: "<USERNAME>",
 		Password: "<PASSWORD>",
 	}
 
 	ctx := context.Background()
-	res, err := s.Authentication.Login(ctx, operations.LoginRequestBody{
-		Type: operations.TypeAPIKey,
+	res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
+		Type: bar.TypeAPIKey,
 	}, operationSecurity)
 	if err != nil {
 		log.Fatal(err)
@@ -419,22 +404,21 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
-	var drinkType *components.DrinkType = components.DrinkTypeSpirit
+	var drinkType *DrinkType = bar.DrinkTypeSpirit
 
 	ctx := context.Background()
-	res, err := s.Drinks.ListDrinks(ctx, operations.WithServerURL("https://speakeasy.bar"), drinkType)
+	res, err := s.Drinks.ListDrinks(ctx, bar.WithServerURL("https://speakeasy.bar"), drinkType)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -477,7 +461,6 @@ This can be a convenient way to configure timeouts, cookies, proxies, custom hea
 <!-- End Custom HTTP Client -->
 
 <!-- Start Authentication -->
-
 ## Authentication
 
 ### Per-Client Security Schemes
@@ -495,15 +478,14 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
@@ -532,15 +514,14 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 

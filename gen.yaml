@@ -24,17 +24,17 @@ features:
     methodServerURLs: 2.82.1
     serverIDs: 2.81.1
 go:
-  version: 0.1.0
+  version: 0.2.0
   clientServerStatusCodesAsErrors: true
   flattenGlobalSecurity: true
   imports:
     option: openapi
     paths:
-      callbacks:
-      errors:
-      operations:
-      shared:
-      webhooks:
+      callbacks: ""
+      errors: ""
+      operations: ""
+      shared: ""
+      webhooks: ""
   inputModelSuffix: input
   installationURL: https://github.com/speakeasy-sdks/bar
   maxMethodParams: 4

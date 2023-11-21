@@ -19,24 +19,23 @@ Authenticate with the API by providing a username and password.
 package main
 
 import(
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
+	"github.com/speakeasy-sdks/bar"
 	"context"
 	"log"
 )
 
 func main() {
-    s := bargo.New()
+    s := bar.New()
 
 
-    operationSecurity := operations.LoginSecurity{
+    operationSecurity := bar.LoginSecurity{
             Username: "<USERNAME>",
             Password: "<PASSWORD>",
         }
 
     ctx := context.Background()
-    res, err := s.Authentication.Login(ctx, operations.LoginRequestBody{
-        Type: operations.TypeAPIKey,
+    res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
+        Type: bar.TypeAPIKey,
     }, operationSecurity)
     if err != nil {
         log.Fatal(err)
@@ -50,17 +49,17 @@ func main() {
 
 ### Parameters
 
-| Parameter                                                                  | Type                                                                       | Required                                                                   | Description                                                                |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| `ctx`                                                                      | [context.Context](https://pkg.go.dev/context#Context)                      | :heavy_check_mark:                                                         | The context to use for the request.                                        |
-| `request`                                                                  | [operations.LoginRequestBody](../../models/operations/loginrequestbody.md) | :heavy_check_mark:                                                         | The request object to use for the request.                                 |
-| `security`                                                                 | [operations.LoginSecurity](../../models/operations/loginsecurity.md)       | :heavy_check_mark:                                                         | The security requirements to use for the request.                          |
+| Parameter                                             | Type                                                  | Required                                              | Description                                           |
+| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| `ctx`                                                 | [context.Context](https://pkg.go.dev/context#Context) | :heavy_check_mark:                                    | The context to use for the request.                   |
+| `request`                                             | [LoginRequestBody](../../loginrequestbody.md)         | :heavy_check_mark:                                    | The request object to use for the request.            |
+| `security`                                            | [LoginSecurity](../../loginsecurity.md)               | :heavy_check_mark:                                    | The security requirements to use for the request.     |
 
 
 ### Response
 
-**[*operations.LoginResponse](../../models/operations/loginresponse.md), error**
-| Error Object       | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| sdkerrors.APIError | 5XX                | application/json   |
-| sdkerrors.SDKError | 400-600            | */*                |
+**[*LoginResponse](../../loginresponse.md), error**
+| Error Object     | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| bar.APIError     | 5XX              | application/json |
+| bar.SDKError     | 400-600          | */*              |

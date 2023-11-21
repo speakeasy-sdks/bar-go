@@ -1,4 +1,4 @@
-module github.com/speakeasy-sdks/bar-go
+module github.com/speakeasy-sdks/bar
 
 go 1.14
 

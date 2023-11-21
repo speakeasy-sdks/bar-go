@@ -19,16 +19,15 @@ Get a list of ingredients, if authenticated this will include stock levels and p
 package main
 
 import(
-	"github.com/speakeasy-sdks/bar-go/models/components"
-	bargo "github.com/speakeasy-sdks/bar-go"
+	"github.com/speakeasy-sdks/bar"
 	"context"
 	"log"
 )
 
 func main() {
-    s := bargo.New(
-        bargo.WithSecurity(components.Security{
-            APIKey: bargo.String("<YOUR_API_KEY>"),
+    s := bar.New(
+        bar.WithSecurity(bar.Security{
+            APIKey: bar.String("<YOUR_API_KEY>"),
         }),
     )
 
@@ -59,8 +58,8 @@ func main() {
 
 ### Response
 
-**[*operations.ListIngredientsResponse](../../models/operations/listingredientsresponse.md), error**
-| Error Object       | Status Code        | Content Type       |
-| ------------------ | ------------------ | ------------------ |
-| sdkerrors.APIError | 5XX                | application/json   |
-| sdkerrors.SDKError | 400-600            | */*                |
+**[*ListIngredientsResponse](../../listingredientsresponse.md), error**
+| Error Object     | Status Code      | Content Type     |
+| ---------------- | ---------------- | ---------------- |
+| bar.APIError     | 5XX              | application/json |
+| bar.SDKError     | 400-600          | */*              |

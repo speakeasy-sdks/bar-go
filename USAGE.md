@@ -10,22 +10,21 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/operations"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New()
+	s := bar.New()
 
-	operationSecurity := operations.LoginSecurity{
+	operationSecurity := bar.LoginSecurity{
 		Username: "<USERNAME>",
 		Password: "<PASSWORD>",
 	}
 
 	ctx := context.Background()
-	res, err := s.Authentication.Login(ctx, operations.LoginRequestBody{
-		Type: operations.TypeAPIKey,
+	res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
+		Type: bar.TypeAPIKey,
 	}, operationSecurity)
 	if err != nil {
 		log.Fatal(err)
@@ -48,19 +47,18 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
-	var drinkType *components.DrinkType = components.DrinkTypeSpirit
+	var drinkType *DrinkType = bar.DrinkTypeSpirit
 
 	ctx := context.Background()
 	res, err := s.Drinks.ListDrinks(ctx, drinkType)
@@ -85,21 +83,20 @@ package main
 
 import (
 	"context"
-	bargo "github.com/speakeasy-sdks/bar-go"
-	"github.com/speakeasy-sdks/bar-go/models/components"
+	"github.com/speakeasy-sdks/bar"
 	"log"
 )
 
 func main() {
-	s := bargo.New(
-		bargo.WithSecurity(components.Security{
-			APIKey: bargo.String("<YOUR_API_KEY>"),
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
 		}),
 	)
 
-	requestBody := []components.OrderInput{
-		components.OrderInput{
-			Type:        components.OrderTypeIngredient,
+	requestBody := []bar.OrderInput{
+		bar.OrderInput{
+			Type:        bar.OrderTypeIngredient,
 			ProductCode: "AC-A2DF3",
 			Quantity:    138554,
 		},
