@@ -7,7 +7,7 @@ management:
 generation:
   comments: {}
   sdkClassName: speakeasy
-  repoURL: https://github.com/speakeasy-sdks/bar-go.git
+  repoURL: https://github.com/speakeasy-sdks/bar.git
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
