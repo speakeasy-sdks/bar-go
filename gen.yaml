@@ -6,7 +6,7 @@ management:
   generationVersion: 2.195.2
 generation:
   comments: {}
-  sdkClassName: speakeasy-bar
+  sdkClassName: speakeasy
   repoURL: https://github.com/speakeasy-sdks/bar-go.git
   maintainOpenAPIOrder: true
   usageSnippets:
@@ -36,9 +36,9 @@ go:
       shared:
       webhooks:
   inputModelSuffix: input
-  installationURL: https://github.com/speakeasy-sdks/bar-go
+  installationURL: https://github.com/speakeasy-sdks/bar
   maxMethodParams: 4
   outputModelSuffix: output
-  packageName: github.com/speakeasy-sdks/bar-go
+  packageName: github.com/speakeasy-sdks/bar
   published: true
   repoSubDirectory: .
