@@ -1,4 +1,4 @@
-<!-- Start SDK Example Usage -->
+<!-- Start SDK Example Usage [usage] -->
 ### Sign in
 
 First you need to send an authentication request to the API by providing your username and password.
@@ -116,4 +116,38 @@ func main() {
 }
 
 ```
-<!-- End SDK Example Usage -->
+
+### Subscribe to webhooks to receive stock updates
+
+```go
+package main
+
+import (
+	"context"
+	"github.com/speakeasy-sdks/bar"
+	"log"
+	"net/http"
+)
+
+func main() {
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
+		}),
+	)
+
+	ctx := context.Background()
+	res, err := s.Config.SubscribeToWebhooks(ctx, []bar.RequestBody{
+		bar.RequestBody{},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if res.StatusCode == http.StatusOK {
+		// handle response
+	}
+}
+
+```
+<!-- End SDK Example Usage [usage] -->

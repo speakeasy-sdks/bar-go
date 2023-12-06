@@ -14,16 +14,17 @@ It has been generated successfully based on your OpenAPI spec. However, it is no
 - [ ] ♻️ Refine your SDK quickly by iterating locally with the [Speakeasy CLI](https://github.com/speakeasy-api/speakeasy)
 - [ ] 🎁 Publish your SDK to package managers by [configuring automatic publishing](https://www.speakeasyapi.dev/docs/productionize-sdks/publish-sdks)
 - [ ] ✨ When ready to productionize, delete this section from the README
-<!-- Start SDK Installation -->
+<!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
 ```bash
 go get github.com/speakeasy-sdks/bar
 ```
-<!-- End SDK Installation -->
+<!-- End SDK Installation [installation] -->
 
+<!-- Start SDK Example Usage [usage] -->
 ## SDK Example Usage
-<!-- Start SDK Example Usage -->
+
 ### Sign in
 
 First you need to send an authentication request to the API by providing your username and password.
@@ -141,40 +142,9 @@ func main() {
 }
 
 ```
-<!-- End SDK Example Usage -->
 
-<!-- Start SDK Available Operations -->
-## Available Resources and Operations
+### Subscribe to webhooks to receive stock updates
 
-
-### [Authentication](docs/sdks/authentication/README.md)
-
-* [Login](docs/sdks/authentication/README.md#login) - Authenticate with the API by providing a username and password.
-
-### [Drinks](docs/sdks/drinks/README.md)
-
-* [ListDrinks](docs/sdks/drinks/README.md#listdrinks) - Get a list of drinks.
-* [GetDrink](docs/sdks/drinks/README.md#getdrink) - Get a drink.
-
-### [Ingredients](docs/sdks/ingredients/README.md)
-
-* [ListIngredients](docs/sdks/ingredients/README.md#listingredients) - Get a list of ingredients.
-
-### [Orders](docs/sdks/orders/README.md)
-
-* [CreateOrder](docs/sdks/orders/README.md#createorder) - Create an order.
-
-### [Config](docs/sdks/config/README.md)
-
-* [SubscribeToWebhooks](docs/sdks/config/README.md#subscribetowebhooks) - Subscribe to webhooks.
-<!-- End SDK Available Operations -->
-
-<!-- Start Retries -->
-## Retries
-
-Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
-
-To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
 ```go
 package main
 
@@ -196,6 +166,82 @@ func main() {
 	res, err := s.Config.SubscribeToWebhooks(ctx, []bar.RequestBody{
 		bar.RequestBody{},
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if res.StatusCode == http.StatusOK {
+		// handle response
+	}
+}
+
+```
+<!-- End SDK Example Usage [usage] -->
+
+<!-- Start Available Resources and Operations [operations] -->
+## Available Resources and Operations
+
+### [Authentication](docs/sdks/authentication/README.md)
+
+* [Login](docs/sdks/authentication/README.md#login) - Authenticate with the API by providing a username and password.
+
+### [Drinks](docs/sdks/drinks/README.md)
+
+* [ListDrinks](docs/sdks/drinks/README.md#listdrinks) - Get a list of drinks.
+* [GetDrink](docs/sdks/drinks/README.md#getdrink) - Get a drink.
+
+### [Ingredients](docs/sdks/ingredients/README.md)
+
+* [ListIngredients](docs/sdks/ingredients/README.md#listingredients) - Get a list of ingredients.
+
+### [Orders](docs/sdks/orders/README.md)
+
+* [CreateOrder](docs/sdks/orders/README.md#createorder) - Create an order.
+
+### [Config](docs/sdks/config/README.md)
+
+* [SubscribeToWebhooks](docs/sdks/config/README.md#subscribetowebhooks) - Subscribe to webhooks.
+<!-- End Available Resources and Operations [operations] -->
+
+<!-- Start Retries [retries] -->
+## Retries
+
+Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
+
+To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
+```go
+package main
+
+import (
+	""
+	"context"
+	"github.com/speakeasy-sdks/bar"
+	"github.com/speakeasy-sdks/bar/internal/utils"
+	"log"
+	"net/http"
+)
+
+func main() {
+	s := bar.New(
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
+		}),
+	)
+
+	ctx := context.Background()
+	res, err := s.Config.SubscribeToWebhooks(ctx, []bar.RequestBody{
+		bar.RequestBody{},
+	}, bar.WithRetries(
+		utils.RetryConfig{
+			Strategy: "backoff",
+			Backoff: &utils.BackoffStrategy{
+				InitialInterval: 1,
+				MaxInterval:     50,
+				Exponent:        1.1,
+				MaxElapsedTime:  100,
+			},
+			RetryConnectionErrors: false,
+		}))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -251,15 +297,16 @@ func main() {
 }
 
 ```
-<!-- End Retries -->
+<!-- End Retries [retries] -->
 
-<!-- Start Error Handling -->
+<!-- Start Error Handling [errors] -->
 ## Error Handling
 
 Handling errors in this SDK should largely match your expectations.  All operations return a response object or an error, they will never return both.  When specified by the OpenAPI spec document, the SDK will return the appropriate subclass.
 
 | Error Object     | Status Code      | Content Type     |
 | ---------------- | ---------------- | ---------------- |
+| bar.BadRequest   | 400              | application/json |
 | bar.APIError     | 5XX              | application/json |
 | bar.SDKError     | 400-600          | */*              |
 
@@ -288,6 +335,12 @@ func main() {
 	})
 	if err != nil {
 
+		var e *BadRequest
+		if errors.As(err, &e) {
+			// handle error
+			log.Fatal(e.Error())
+		}
+
 		var e *APIError
 		if errors.As(err, &e) {
 			// handle error
@@ -303,9 +356,9 @@ func main() {
 }
 
 ```
-<!-- End Error Handling -->
+<!-- End Error Handling [errors] -->
 
-<!-- Start Server Selection -->
+<!-- Start Server Selection [server] -->
 ## Server Selection
 
 ### Select Server by Name
@@ -317,6 +370,7 @@ You can override the default server globally using the `WithServer` option when 
 | `prod` | `https://speakeasy.bar` | None |
 | `staging` | `https://staging.speakeasy.bar` | None |
 | `customer` | `https://{organization}.{environment}.speakeasy.bar` | `organization` (default is `api`), `environment` (default is `prod`) |
+
 #### Example
 
 ```go
@@ -331,22 +385,22 @@ import (
 func main() {
 	s := bar.New(
 		bar.WithServer("customer"),
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
+		}),
 	)
 
-	operationSecurity := bar.LoginSecurity{
-		Username: "<USERNAME>",
-		Password: "<PASSWORD>",
+	ingredients := []string{
+		"string",
 	}
 
 	ctx := context.Background()
-	res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
-		Type: bar.TypeAPIKey,
-	}, operationSecurity)
+	res, err := s.Ingredients.ListIngredients(ctx, ingredients)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if res.Object != nil {
+	if res.Classes != nil {
 		// handle response
 	}
 }
@@ -374,22 +428,22 @@ import (
 func main() {
 	s := bar.New(
 		bar.WithServerURL("https://speakeasy.bar"),
+		bar.WithSecurity(bar.Security{
+			APIKey: bar.String("<YOUR_API_KEY>"),
+		}),
 	)
 
-	operationSecurity := bar.LoginSecurity{
-		Username: "<USERNAME>",
-		Password: "<PASSWORD>",
+	ingredients := []string{
+		"string",
 	}
 
 	ctx := context.Background()
-	res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
-		Type: bar.TypeAPIKey,
-	}, operationSecurity)
+	res, err := s.Ingredients.ListIngredients(ctx, ingredients)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if res.Object != nil {
+	if res.Classes != nil {
 		// handle response
 	}
 }
@@ -429,9 +483,9 @@ func main() {
 }
 
 ```
-<!-- End Server Selection -->
+<!-- End Server Selection [server] -->
 
-<!-- Start Custom HTTP Client -->
+<!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
 
 The Go SDK makes API calls that wrap an internal HTTP client. The requirements for the HTTP client are very simple. It must match this interface:
@@ -458,9 +512,9 @@ var (
 ```
 
 This can be a convenient way to configure timeouts, cookies, proxies, custom headers, and other low-level configuration.
-<!-- End Custom HTTP Client -->
+<!-- End Custom HTTP Client [http-client] -->
 
-<!-- Start Authentication -->
+<!-- Start Authentication [security] -->
 ## Authentication
 
 ### Per-Client Security Schemes
@@ -519,33 +573,34 @@ import (
 )
 
 func main() {
-	s := bar.New(
-		bar.WithSecurity(bar.Security{
-			APIKey: bar.String("<YOUR_API_KEY>"),
-		}),
-	)
+	s := bar.New()
 
-	ingredients := []string{
-		"string",
+	operationSecurity := bar.LoginSecurity{
+		Username: "<USERNAME>",
+		Password: "<PASSWORD>",
 	}
 
 	ctx := context.Background()
-	res, err := s.Ingredients.ListIngredients(ctx, ingredients)
+	res, err := s.Authentication.Login(ctx, bar.LoginRequestBody{
+		Type: bar.TypeAPIKey,
+	}, operationSecurity)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if res.Classes != nil {
+	if res.Object != nil {
 		// handle response
 	}
 }
 
 ```
-<!-- End Authentication -->
+<!-- End Authentication [security] -->
 
-<!-- Start Go Types -->
+<!-- Start Special Types [types] -->
+## Special Types
 
-<!-- End Go Types -->
+
+<!-- End Special Types [types] -->
 
 <!-- Placeholder for Future Speakeasy SDK Sections -->
 

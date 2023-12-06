@@ -37,11 +37,11 @@ internal/utils/utils.go
 /ordertype.go
 /orderinput.go
 /subscribetowebhooksop.go
+/badrequest.go
 /security.go
 /stockupdate.go
 /ingredientinput.go
 /drinkinput.go
-USAGE.md
 docs/loginsecurity.md
 docs/type.md
 docs/loginrequestbody.md
@@ -69,6 +69,7 @@ docs/orderinput.md
 docs/webhook.md
 docs/requestbody.md
 docs/subscribetowebhooksresponse.md
+docs/badrequest.md
 docs/security.md
 docs/stockupdateresponse.md
 docs/stockupdaterequestbody.md
@@ -81,5 +82,6 @@ docs/sdks/drinks/README.md
 docs/sdks/ingredients/README.md
 docs/sdks/orders/README.md
 docs/sdks/config/README.md
+USAGE.md
 options.go
 .gitattributes

@@ -2,10 +2,6 @@
 
 package bar
 
-import (
-	"encoding/json"
-)
-
 // APIError - An error occurred interacting with the API.
 type APIError struct {
 	Code    *string                `json:"code,omitempty"`
@@ -16,6 +12,9 @@ type APIError struct {
 var _ error = &APIError{}
 
 func (e *APIError) Error() string {
-	data, _ := json.Marshal(e)
-	return string(data)
+	if e.Message == nil {
+		return "unknown error"
+	}
+
+	return *e.Message
 }

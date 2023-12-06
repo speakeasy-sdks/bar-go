@@ -48,6 +48,7 @@ func main() {
 | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
 | `ctx`                                                 | [context.Context](https://pkg.go.dev/context#Context) | :heavy_check_mark:                                    | The context to use for the request.                   |
 | `request`                                             | [[]RequestBody](../../.md)                            | :heavy_check_mark:                                    | The request object to use for the request.            |
+| `opts`                                                | [][bar.Option](../../option.md)                       | :heavy_minus_sign:                                    | The options for this request.                         |
 
 
 ### Response
@@ -55,5 +56,6 @@ func main() {
 **[*SubscribeToWebhooksResponse](../../subscribetowebhooksresponse.md), error**
 | Error Object     | Status Code      | Content Type     |
 | ---------------- | ---------------- | ---------------- |
+| bar.BadRequest   | 400              | application/json |
 | bar.APIError     | 5XX              | application/json |
 | bar.SDKError     | 400-600          | */*              |
