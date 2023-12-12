@@ -59,7 +59,7 @@ func main() {
 | Parameter                                             | Type                                                  | Required                                              | Description                                           |
 | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
 | `ctx`                                                 | [context.Context](https://pkg.go.dev/context#Context) | :heavy_check_mark:                                    | The context to use for the request.                   |
-| `requestBody`                                         | [][OrderInput](..//orderinput.md)                     | :heavy_check_mark:                                    | N/A                                                   |
+| `requestBody`                                         | [][OrderInput](../../orderinput.md)                   | :heavy_check_mark:                                    | N/A                                                   |
 | `callbackURL`                                         | **string*                                             | :heavy_minus_sign:                                    | The url to call when the order is updated.            |
 
 

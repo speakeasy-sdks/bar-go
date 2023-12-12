@@ -13,6 +13,8 @@ type StockUpdateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// An unknown error occurred interacting with the API.
+	Error *Error
 }
 
 func (o *StockUpdateResponse) GetContentType() string {
@@ -34,6 +36,13 @@ func (o *StockUpdateResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *StockUpdateResponse) GetError() *Error {
+	if o == nil {
+		return nil
+	}
+	return o.Error
 }
 
 type StockUpdateRequestBody struct {

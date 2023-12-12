@@ -86,6 +86,8 @@ type LoginResponse struct {
 	RawResponse *http.Response
 	// The api key to use for authenticated endpoints.
 	Object *LoginResponseBody
+	// An unknown error occurred interacting with the API.
+	Error *Error
 }
 
 func (o *LoginResponse) GetContentType() string {
@@ -114,4 +116,11 @@ func (o *LoginResponse) GetObject() *LoginResponseBody {
 		return nil
 	}
 	return o.Object
+}
+
+func (o *LoginResponse) GetError() *Error {
+	if o == nil {
+		return nil
+	}
+	return o.Error
 }

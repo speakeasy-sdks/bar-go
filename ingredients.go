@@ -94,6 +94,18 @@ func (s *Ingredients) ListIngredients(ctx context.Context, ingredients []string)
 		default:
 			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	default:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out Error
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.Error = &out
+		default:
+			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	}
 
 	return res, nil

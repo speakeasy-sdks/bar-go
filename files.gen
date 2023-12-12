@@ -24,6 +24,7 @@ internal/utils/retries.go
 internal/utils/security.go
 internal/utils/utils.go
 /loginop.go
+/error.go
 /apierror.go
 /listdrinksop.go
 /drink.go
@@ -47,6 +48,7 @@ docs/type.md
 docs/loginrequestbody.md
 docs/loginresponsebody.md
 docs/loginresponse.md
+docs/error.md
 docs/apierror.md
 docs/listdrinksrequest.md
 docs/listdrinksresponse.md

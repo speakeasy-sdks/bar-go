@@ -58,6 +58,8 @@ type SubscribeToWebhooksResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// An unknown error occurred interacting with the API.
+	Error *Error
 }
 
 func (o *SubscribeToWebhooksResponse) GetContentType() string {
@@ -79,4 +81,11 @@ func (o *SubscribeToWebhooksResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *SubscribeToWebhooksResponse) GetError() *Error {
+	if o == nil {
+		return nil
+	}
+	return o.Error
 }

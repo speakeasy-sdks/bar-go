@@ -26,6 +26,8 @@ type GetDrinkResponse struct {
 	RawResponse *http.Response
 	// A drink.
 	Drink *Drink
+	// An unknown error occurred interacting with the API.
+	Error *Error
 }
 
 func (o *GetDrinkResponse) GetContentType() string {
@@ -54,4 +56,11 @@ func (o *GetDrinkResponse) GetDrink() *Drink {
 		return nil
 	}
 	return o.Drink
+}
+
+func (o *GetDrinkResponse) GetError() *Error {
+	if o == nil {
+		return nil
+	}
+	return o.Error
 }

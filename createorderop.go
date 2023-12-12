@@ -13,6 +13,8 @@ type CreateOrderOrderUpdateResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// An unknown error occurred interacting with the API.
+	Error *Error
 }
 
 func (o *CreateOrderOrderUpdateResponse) GetContentType() string {
@@ -34,6 +36,13 @@ func (o *CreateOrderOrderUpdateResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *CreateOrderOrderUpdateResponse) GetError() *Error {
+	if o == nil {
+		return nil
+	}
+	return o.Error
 }
 
 type CreateOrderOrderUpdateRequestBody struct {
@@ -77,6 +86,8 @@ type CreateOrderResponse struct {
 	RawResponse *http.Response
 	// The order was created successfully.
 	Order *Order
+	// An unknown error occurred interacting with the API.
+	Error *Error
 }
 
 func (o *CreateOrderResponse) GetContentType() string {
@@ -105,4 +116,11 @@ func (o *CreateOrderResponse) GetOrder() *Order {
 		return nil
 	}
 	return o.Order
+}
+
+func (o *CreateOrderResponse) GetError() *Error {
+	if o == nil {
+		return nil
+	}
+	return o.Error
 }

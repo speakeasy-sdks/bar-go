@@ -108,6 +108,18 @@ func (s *Drinks) ListDrinks(ctx context.Context, drinkType *DrinkType, opts ...O
 		default:
 			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	default:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out Error
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.Error = &out
+		default:
+			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	}
 
 	return res, nil
@@ -180,6 +192,18 @@ func (s *Drinks) GetDrink(ctx context.Context, name string) (*GetDrinkResponse, 
 				return nil, err
 			}
 			return nil, &out
+		default:
+			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	default:
+		switch {
+		case utils.MatchContentType(contentType, `application/json`):
+			var out Error
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.Error = &out
 		default:
 			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
 		}

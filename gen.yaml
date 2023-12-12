@@ -2,8 +2,8 @@ configVersion: 1.0.0
 management:
   docChecksum: f22d50ed7aa4956c14ae35514eb114c1
   docVersion: 1.0.0
-  speakeasyVersion: 1.125.2
-  generationVersion: 2.210.6
+  speakeasyVersion: 1.126.0
+  generationVersion: 2.213.3
 generation:
   comments: {}
   sdkClassName: speakeasy
@@ -13,11 +13,11 @@ generation:
     optionalPropertyRendering: withExample
 features:
   go:
-    core: 3.1.5
+    core: 3.2.0
     errors: 2.81.8
     examples: 2.81.3
     flattening: 2.81.1
-    globalSecurity: 2.82.2
+    globalSecurity: 2.82.3
     globalServerURLs: 2.82.1
     inputOutputModels: 2.82.0
     methodSecurity: 2.82.1
@@ -25,7 +25,7 @@ features:
     retries: 2.82.1
     serverIDs: 2.81.1
 go:
-  version: 0.2.1
+  version: 0.3.0
   clientServerStatusCodesAsErrors: true
   flattenGlobalSecurity: true
   imports:

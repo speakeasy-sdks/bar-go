@@ -27,6 +27,8 @@ type ListIngredientsResponse struct {
 	RawResponse *http.Response
 	// A list of ingredients.
 	Classes []Ingredient
+	// An unknown error occurred interacting with the API.
+	Error *Error
 }
 
 func (o *ListIngredientsResponse) GetContentType() string {
@@ -55,4 +57,11 @@ func (o *ListIngredientsResponse) GetClasses() []Ingredient {
 		return nil
 	}
 	return o.Classes
+}
+
+func (o *ListIngredientsResponse) GetError() *Error {
+	if o == nil {
+		return nil
+	}
+	return o.Error
 }
