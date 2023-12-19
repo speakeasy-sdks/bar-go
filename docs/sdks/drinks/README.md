@@ -62,7 +62,7 @@ func main() {
 | Error Object     | Status Code      | Content Type     |
 | ---------------- | ---------------- | ---------------- |
 | bar.APIError     | 5XX              | application/json |
-| bar.SDKError     | 400-600          | */*              |
+| bar.SDKError     | 4xx-5xx          | */*              |
 
 ## GetDrink
 
@@ -115,4 +115,4 @@ func main() {
 | Error Object     | Status Code      | Content Type     |
 | ---------------- | ---------------- | ---------------- |
 | bar.APIError     | 5XX              | application/json |
-| bar.SDKError     | 400-600          | */*              |
+| bar.SDKError     | 4xx-5xx          | */*              |
