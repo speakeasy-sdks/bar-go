@@ -1,31 +1,11 @@
-configVersion: 1.0.0
-management:
-  docChecksum: f22d50ed7aa4956c14ae35514eb114c1
-  docVersion: 1.0.0
-  speakeasyVersion: 1.127.0
-  generationVersion: 2.220.0
+configVersion: 2.0.0
 generation:
-  comments: {}
   sdkClassName: speakeasy
-  repoURL: https://github.com/speakeasy-sdks/bar.git
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
   fixes:
     nameResolutionDec2023: false
-features:
-  go:
-    core: 3.2.2
-    errors: 2.81.8
-    examples: 2.81.3
-    flattening: 2.81.1
-    globalSecurity: 2.82.3
-    globalServerURLs: 2.82.1
-    inputOutputModels: 2.83.0
-    methodSecurity: 2.82.1
-    methodServerURLs: 2.82.1
-    retries: 2.82.1
-    serverIDs: 2.81.1
 go:
   version: 0.4.0
   clientServerStatusCodesAsErrors: true
@@ -39,9 +19,6 @@ go:
       shared: ""
       webhooks: ""
   inputModelSuffix: input
-  installationURL: https://github.com/speakeasy-sdks/bar
   maxMethodParams: 4
   outputModelSuffix: output
   packageName: github.com/speakeasy-sdks/bar
-  published: true
-  repoSubDirectory: .
