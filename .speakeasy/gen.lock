@@ -4,9 +4,9 @@ management:
   docChecksum: f22d50ed7aa4956c14ae35514eb114c1
   docVersion: 1.0.0
   speakeasyVersion: internal
-  generationVersion: 2.234.3
-  releaseVersion: 0.4.1
-  configChecksum: a0bf8654b6554e902c11754bec846194
+  generationVersion: 2.237.2
+  releaseVersion: 0.4.2
+  configChecksum: 5c6d264b47cbaa0016cad469619de8a7
   repoURL: https://github.com/speakeasy-sdks/bar.git
   repoSubDirectory: .
   installationURL: https://github.com/speakeasy-sdks/bar
@@ -17,10 +17,10 @@ features:
     errors: 2.81.8
     examples: 2.81.3
     flattening: 2.81.1
-    globalSecurity: 2.82.3
+    globalSecurity: 2.82.4
     globalServerURLs: 2.82.1
     inputOutputModels: 2.83.0
-    methodSecurity: 2.82.1
+    methodSecurity: 2.82.2
     methodServerURLs: 2.82.1
     retries: 2.82.1
     serverIDs: 2.81.1
@@ -33,7 +33,6 @@ generatedFiles:
   - speakeasy.go
   - go.mod
   - go.sum
-  - tests/helpers.go
   - /sdkerror.go
   - types/bigint.go
   - types/date.go
