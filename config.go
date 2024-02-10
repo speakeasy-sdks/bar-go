@@ -82,6 +82,13 @@ func (s *Config) SubscribeToWebhooks(ctx context.Context, request []RequestBody,
 			"404",
 		},
 	}, func() (*http.Response, error) {
+		if req.Body != nil {
+			copyBody, err := req.GetBody()
+			if err != nil {
+				return nil, err
+			}
+			req.Body = copyBody
+		}
 		return client.Do(req)
 	})
 	if err != nil {
