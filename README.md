@@ -84,7 +84,7 @@ func main() {
 		}),
 	)
 
-	var drinkType *DrinkType = bar.DrinkTypeSpirit
+	var drinkType *DrinkType = bar.DrinkTypeSpirit.ToPointer()
 
 	ctx := context.Background()
 	res, err := s.Drinks.ListDrinks(ctx, drinkType)
@@ -128,7 +128,7 @@ func main() {
 		},
 	}
 
-	var callbackURL *string = "string"
+	var callbackURL *string = bar.String("string")
 
 	ctx := context.Background()
 	res, err := s.Orders.CreateOrder(ctx, requestBody, callbackURL)
@@ -469,7 +469,7 @@ func main() {
 		}),
 	)
 
-	var drinkType *DrinkType = bar.DrinkTypeSpirit
+	var drinkType *DrinkType = bar.DrinkTypeSpirit.ToPointer()
 
 	ctx := context.Background()
 	res, err := s.Drinks.ListDrinks(ctx, bar.WithServerURL("https://speakeasy.bar"), drinkType)

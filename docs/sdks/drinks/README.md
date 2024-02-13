@@ -33,7 +33,7 @@ func main() {
     )
 
 
-    var drinkType *DrinkType = bar.DrinkTypeSpirit
+    var drinkType *DrinkType = bar.DrinkTypeSpirit.ToPointer()
 
     ctx := context.Background()
     res, err := s.Drinks.ListDrinks(ctx, drinkType)

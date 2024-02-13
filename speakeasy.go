@@ -226,8 +226,8 @@ func New(opts ...SDKOption) *Speakeasy {
 			Language:          "go",
 			OpenAPIDocVersion: "1.0.0",
 			SDKVersion:        "0.5.1",
-			GenVersion:        "2.252.2",
-			UserAgent:         "speakeasy-sdk/go 0.5.1 2.252.2 1.0.0 github.com/speakeasy-sdks/bar",
+			GenVersion:        "2.253.0",
+			UserAgent:         "speakeasy-sdk/go 0.5.1 2.253.0 1.0.0 github.com/speakeasy-sdks/bar",
 			ServerDefaults: map[string]map[string]string{
 				"prod":    {},
 				"staging": {},
