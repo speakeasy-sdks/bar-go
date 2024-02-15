@@ -33,7 +33,7 @@ func main() {
 
 
     ingredients := []string{
-        "string",
+        "<value>",
     }
 
     ctx := context.Background()

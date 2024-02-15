@@ -40,7 +40,7 @@ func main() {
         },
     }
 
-    var callbackURL *string = bar.String("string")
+    var callbackURL *string = bar.String("<value>")
 
     ctx := context.Background()
     res, err := s.Orders.CreateOrder(ctx, requestBody, callbackURL)
