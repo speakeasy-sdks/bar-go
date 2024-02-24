@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/speakeasy-sdks/bar/internal/hooks"
 	"github.com/speakeasy-sdks/bar/internal/utils"
 	"io"
@@ -26,7 +27,11 @@ func newConfig(sdkConfig sdkConfiguration) *Config {
 // SubscribeToWebhooks - Subscribe to webhooks.
 // Subscribe to webhooks.
 func (s *Config) SubscribeToWebhooks(ctx context.Context, request []RequestBody, opts ...Option) (*SubscribeToWebhooksResponse, error) {
-	hookCtx := hooks.HookContext{OperationID: "subscribeToWebhooks"}
+	hookCtx := hooks.HookContext{
+		Context:        ctx,
+		OperationID:    "subscribeToWebhooks",
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 
 	o := Options{}
 	supportedOptions := []string{
@@ -56,11 +61,6 @@ func (s *Config) SubscribeToWebhooks(ctx context.Context, request []RequestBody,
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	req.Header.Set("Content-Type", reqContentType)
-
-	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{hookCtx}, req)
-	if err != nil {
-		return nil, err
-	}
 
 	client := s.sdkConfiguration.SecurityClient
 
@@ -97,6 +97,11 @@ func (s *Config) SubscribeToWebhooks(ctx context.Context, request []RequestBody,
 			req.Body = copyBody
 		}
 
+		req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
+		if err != nil {
+			return nil, backoff.Permanent(err)
+		}
+
 		httpRes, err := client.Do(req)
 		if err != nil || httpRes == nil {
 			if err != nil {
@@ -105,14 +110,14 @@ func (s *Config) SubscribeToWebhooks(ctx context.Context, request []RequestBody,
 				err = fmt.Errorf("error sending request: no response")
 			}
 
-			_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{hookCtx}, nil, err)
+			_, err = s.sdkConfiguration.Hooks.AfterError(hooks.AfterErrorContext{HookContext: hookCtx}, nil, err)
 		}
 		return httpRes, err
 	})
 	if err != nil {
 		return nil, err
 	} else {
-		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{hookCtx}, httpRes)
+		httpRes, err = s.sdkConfiguration.Hooks.AfterSuccess(hooks.AfterSuccessContext{HookContext: hookCtx}, httpRes)
 		if err != nil {
 			return nil, err
 		}
