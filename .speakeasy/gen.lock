@@ -4,15 +4,16 @@ management:
   docChecksum: f22d50ed7aa4956c14ae35514eb114c1
   docVersion: 1.0.0
   speakeasyVersion: internal
-  generationVersion: 2.272.7
-  releaseVersion: 0.6.3
-  configChecksum: 54c5d49b95c54a20f912729d8cae9e7e
+  generationVersion: 2.275.4
+  releaseVersion: 0.7.0
+  configChecksum: 4bedca8f4559e6b58c5ebebf93d3409b
   repoURL: https://github.com/speakeasy-sdks/bar.git
   repoSubDirectory: .
   installationURL: https://github.com/speakeasy-sdks/bar
   published: true
 features:
   go:
+    callbacks: 1.0.0
     core: 3.4.3
     errors: 2.81.8
     examples: 2.81.3
@@ -24,6 +25,7 @@ features:
     methodServerURLs: 2.82.1
     retries: 2.82.2
     serverIDs: 2.81.1
+    webhooks: 1.0.0
 generatedFiles:
   - authentication.go
   - drinks.go
