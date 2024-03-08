@@ -51,14 +51,16 @@ func (s *Authentication) Login(ctx context.Context, request LoginRequestBody, se
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
 	req.Header.Set("Content-Type", reqContentType)
 
-	client := utils.ConfigureSecurityClient(s.sdkConfiguration.DefaultClient, withSecurity(security))
+	if err := utils.PopulateSecurity(ctx, req, withSecurity(security)); err != nil {
+		return nil, err
+	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
 	if err != nil {
 		return nil, err
 	}
 
-	httpRes, err := client.Do(req)
+	httpRes, err := s.sdkConfiguration.Client.Do(req)
 	if err != nil || httpRes == nil {
 		if err != nil {
 			err = fmt.Errorf("error sending request: %w", err)
@@ -79,11 +81,10 @@ func (s *Authentication) Login(ctx context.Context, request LoginRequestBody, se
 			return nil, err
 		}
 	}
-	contentType := httpRes.Header.Get("Content-Type")
 
 	res := &LoginResponse{
 		StatusCode:  httpRes.StatusCode,
-		ContentType: contentType,
+		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
 	}
 
@@ -97,7 +98,7 @@ func (s *Authentication) Login(ctx context.Context, request LoginRequestBody, se
 	switch {
 	case httpRes.StatusCode == 200:
 		switch {
-		case utils.MatchContentType(contentType, `application/json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			var out LoginResponseBody
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
@@ -105,7 +106,7 @@ func (s *Authentication) Login(ctx context.Context, request LoginRequestBody, se
 
 			res.Object = &out
 		default:
-			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
+			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode == 401:
 		fallthrough
@@ -113,18 +114,19 @@ func (s *Authentication) Login(ctx context.Context, request LoginRequestBody, se
 		return nil, NewSDKError("API error occurred", httpRes.StatusCode, string(rawBody), httpRes)
 	case httpRes.StatusCode >= 500 && httpRes.StatusCode < 600:
 		switch {
-		case utils.MatchContentType(contentType, `application/json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			var out APIError
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
+
 			return nil, &out
 		default:
-			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
+			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	default:
 		switch {
-		case utils.MatchContentType(contentType, `application/json`):
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/json`):
 			var out Error
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
@@ -132,7 +134,7 @@ func (s *Authentication) Login(ctx context.Context, request LoginRequestBody, se
 
 			res.Error = &out
 		default:
-			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", contentType), httpRes.StatusCode, string(rawBody), httpRes)
+			return nil, NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	}
 

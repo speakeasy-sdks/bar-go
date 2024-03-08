@@ -47,7 +47,6 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-
     if res.Order != nil {
         // handle response
     }

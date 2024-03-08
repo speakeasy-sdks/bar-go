@@ -11,7 +11,7 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
 go:
-  version: 0.7.0
+  version: 0.8.0
   additionalDependencies: {}
   clientServerStatusCodesAsErrors: true
   flattenGlobalSecurity: true
@@ -27,3 +27,4 @@ go:
   maxMethodParams: 4
   outputModelSuffix: output
   packageName: github.com/speakeasy-sdks/bar
+  responseFormat: envelope

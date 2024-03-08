@@ -55,7 +55,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Object != nil {
 		// handle response
 	}
@@ -91,7 +90,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Classes != nil {
 		// handle response
 	}
@@ -135,7 +133,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Order != nil {
 		// handle response
 	}
@@ -152,7 +149,6 @@ import (
 	"context"
 	"github.com/speakeasy-sdks/bar"
 	"log"
-	"net/http"
 )
 
 func main() {
@@ -169,8 +165,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	if res.StatusCode == http.StatusOK {
+	if res != nil {
 		// handle response
 	}
 }
@@ -218,7 +213,6 @@ import (
 	"github.com/speakeasy-sdks/bar"
 	"github.com/speakeasy-sdks/bar/internal/utils"
 	"log"
-	"net/http"
 )
 
 func main() {
@@ -245,8 +239,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	if res.StatusCode == http.StatusOK {
+	if res != nil {
 		// handle response
 	}
 }
@@ -262,7 +255,6 @@ import (
 	"github.com/speakeasy-sdks/bar"
 	"github.com/speakeasy-sdks/bar/internal/utils"
 	"log"
-	"net/http"
 )
 
 func main() {
@@ -290,8 +282,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	if res.StatusCode == http.StatusOK {
+	if res != nil {
 		// handle response
 	}
 }
@@ -399,7 +390,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Classes != nil {
 		// handle response
 	}
@@ -442,7 +432,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Classes != nil {
 		// handle response
 	}
@@ -476,7 +465,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Classes != nil {
 		// handle response
 	}
@@ -552,7 +540,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Classes != nil {
 		// handle response
 	}
@@ -587,7 +574,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	if res.Object != nil {
 		// handle response
 	}

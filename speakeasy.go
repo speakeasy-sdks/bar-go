@@ -52,8 +52,7 @@ func Float32(f float32) *float32 { return &f }
 func Float64(f float64) *float64 { return &f }
 
 type sdkConfiguration struct {
-	DefaultClient     HTTPClient
-	SecurityClient    HTTPClient
+	Client            HTTPClient
 	Security          func(context.Context) (interface{}, error)
 	ServerURL         string
 	Server            string
@@ -189,7 +188,7 @@ func WithEnvironment(environment ServerEnvironment) SDKOption {
 // WithClient allows the overriding of the default HTTP client used by the SDK
 func WithClient(client HTTPClient) SDKOption {
 	return func(sdk *Speakeasy) {
-		sdk.sdkConfiguration.DefaultClient = client
+		sdk.sdkConfiguration.Client = client
 	}
 }
 
@@ -227,9 +226,9 @@ func New(opts ...SDKOption) *Speakeasy {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "1.0.0",
-			SDKVersion:        "0.7.0",
-			GenVersion:        "2.275.4",
-			UserAgent:         "speakeasy-sdk/go 0.7.0 2.275.4 1.0.0 github.com/speakeasy-sdks/bar",
+			SDKVersion:        "0.8.0",
+			GenVersion:        "2.279.1",
+			UserAgent:         "speakeasy-sdk/go 0.8.0 2.279.1 1.0.0 github.com/speakeasy-sdks/bar",
 			ServerDefaults: map[string]map[string]string{
 				"prod":    {},
 				"staging": {},
@@ -246,23 +245,15 @@ func New(opts ...SDKOption) *Speakeasy {
 	}
 
 	// Use WithClient to override the default client if you would like to customize the timeout
-	if sdk.sdkConfiguration.DefaultClient == nil {
-		sdk.sdkConfiguration.DefaultClient = &http.Client{Timeout: 60 * time.Second}
+	if sdk.sdkConfiguration.Client == nil {
+		sdk.sdkConfiguration.Client = &http.Client{Timeout: 60 * time.Second}
 	}
 
 	currentServerURL, _ := sdk.sdkConfiguration.GetServerDetails()
 	serverURL := currentServerURL
-	serverURL, sdk.sdkConfiguration.DefaultClient = sdk.sdkConfiguration.Hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.DefaultClient)
+	serverURL, sdk.sdkConfiguration.Client = sdk.sdkConfiguration.Hooks.SDKInit(currentServerURL, sdk.sdkConfiguration.Client)
 	if serverURL != currentServerURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
-	}
-
-	if sdk.sdkConfiguration.SecurityClient == nil {
-		if sdk.sdkConfiguration.Security != nil {
-			sdk.sdkConfiguration.SecurityClient = utils.ConfigureSecurityClient(sdk.sdkConfiguration.DefaultClient, sdk.sdkConfiguration.Security)
-		} else {
-			sdk.sdkConfiguration.SecurityClient = sdk.sdkConfiguration.DefaultClient
-		}
 	}
 
 	sdk.Authentication = newAuthentication(sdk.sdkConfiguration)
