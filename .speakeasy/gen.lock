@@ -3,10 +3,10 @@ id: a5de1cdc-d174-4d63-a209-2b963fb8fd7e
 management:
   docChecksum: f22d50ed7aa4956c14ae35514eb114c1
   docVersion: 1.0.0
-  speakeasyVersion: 1.204.1
-  generationVersion: 2.279.1
-  releaseVersion: 0.8.0
-  configChecksum: b0be1e279e185fae435565d5124da9fc
+  speakeasyVersion: 1.207.1
+  generationVersion: 2.280.6
+  releaseVersion: 0.8.1
+  configChecksum: 0df2454b904cf4acf695296449a8e8ea
   repoURL: https://github.com/speakeasy-sdks/bar.git
   repoSubDirectory: .
   installationURL: https://github.com/speakeasy-sdks/bar
@@ -19,7 +19,7 @@ features:
     examples: 2.81.3
     flattening: 2.81.1
     globalSecurity: 2.82.8
-    globalServerURLs: 2.82.1
+    globalServerURLs: 2.82.2
     inputOutputModels: 2.83.0
     methodSecurity: 2.82.2
     methodServerURLs: 2.82.1
